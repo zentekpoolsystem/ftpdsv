@@ -2,6 +2,10 @@
 require("dotenv").config({ path: ".env" });
 var nodemailer = require("nodemailer");
 var log4js = require("log4js");
+log4js.configure({
+	appenders: { cronjob: { type: "file", filename: "cron.log" }},
+    categories: { default: { appenders: ["cronjob"], level: "debug"}}
+});
 var logger = log4js.getLogger("cronjob");
 logger.level = "debug";
 
@@ -38,7 +42,7 @@ var bluebird = require("bluebird");
 var soap = require("strong-soap").soap;
 
 var xmlHandler = new soap.XMLHandler();
-const wsdl_capture_url = process.env.Capture;
+const wsdl_capture_url = process.env.ZEPRA_CAPTURE;
 const captureWsContentType = "application/soap+xml; charset=utf-8";
 
 function createObjectEvent(objectEvent) {
